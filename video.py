@@ -5,7 +5,7 @@ from status import format_progress_bar
 import asyncio
 import os, time
 import logging
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 aria2 = aria2p.API(
     aria2p.Client(
@@ -21,6 +21,7 @@ options = {
 }
 
 aria2.set_global_options(options)
+
 
 async def download_video(url, reply_msg, user_mention, user_id):
     response = requests.get(f"https://teraboxpremium.itz-ashlynn.workers.dev/?url={url}")
@@ -69,15 +70,14 @@ async def download_video(url, reply_msg, user_mention, user_id):
             with open(thumbnail_path, "wb") as thumb_file:
                 thumb_file.write(thumbnail_response.content)
 
-            await reply_msg.edit_text("ᴜᴘʟᴏᴀᴅɪɴɢ...")
+            await reply_msg.edit_text("á´á´Êá´á´á´ÉªÉ´É¢...")
 
             return file_path, thumbnail_path, video_title
     except Exception as e:
         logging.error(f"Error handling message: {e}")
         buttons = [
-            [InlineKeyboardButton("🚀 HD Video", url=hd_download_link)],
-            [InlineKeyboardButton("⚡ Fast Download", url=fast_download_link)],
-            [InlineKeyboardButton("📺 Wᴀᴛᴄʜ Oɴʟɪɴᴇ", web_app=WebAppInfo(url=f"https://terabox-watch.netlify.app/?url={url}"))]
+            [InlineKeyboardButton("ð HD Video", url=hd_download_link)],
+            [InlineKeyboardButton("â¡ Fast Download", url=fast_download_link)]
         ]
         reply_markup = InlineKeyboardMarkup(buttons)
         await reply_msg.reply_text(
@@ -87,7 +87,7 @@ async def download_video(url, reply_msg, user_mention, user_id):
         return None, None, None
 
 # async def download_video(url, reply_msg, user_mention, user_id):
-#     response = requests.get(f"https://teraboxapi2.darkhacker7301.workers.dev/?url={url}")
+#     response = requests.get(f"https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url={url}")
 #     response.raise_for_status()
 #     data = response.json()
 
@@ -132,7 +132,7 @@ async def download_video(url, reply_msg, user_mention, user_id):
 #         with open(thumbnail_path, "wb") as thumb_file:
 #             thumb_file.write(thumbnail_response.content)
 
-#         await reply_msg.edit_text("ᴜᴘʟᴏᴀᴅɪɴɢ...")
+#         await reply_msg.edit_text("á´á´Êá´á´á´ÉªÉ´É¢...")
 
 #         return file_path, thumbnail_path, video_title
 #     else:
@@ -175,7 +175,7 @@ async def upload_video(client, file_path, thumbnail_path, video_title, reply_msg
         collection_message = await client.send_video(
             chat_id=collection_channel_id,
             video=file,
-            caption=f"✨ {video_title}\n👤 ʟᴇᴇᴄʜᴇᴅ ʙʏ : {user_mention}\n📥 ᴜsᴇʀ ʟɪɴᴋ: [Cʟɪᴄᴋ ʜᴇʀᴇ](tg://user?id={user_id})",
+            caption=f"â¨ á´Éªá´Êá´: {video_title}\nð¤ á´á´á´¡É´Êá´á´á´á´á´ ÊÊ: {user_mention}\nð¥ á´sá´Ê ÊÉªÉ´á´: tg://openmessage?user_id={user_id}",
             thumb=thumbnail_path,
             progress=progress
         )
@@ -188,7 +188,7 @@ async def upload_video(client, file_path, thumbnail_path, video_title, reply_msg
         await message.delete()
 
     await reply_msg.delete()
-    sticker_message = await message.reply_sticker("CAACAgUAAxkBAAKOW2dSTurhAaxNsu0_eV4Q5bZLysbGAAK4BwACv1KpVJ4tCBs0ecfPNgQ")
+    sticker_message = await message.reply_sticker("CAACAgUAAxkBAAKAEWcBqlNKFe0wAuORDYIlEXotOTuRAALhAQACrb-BNke3w36Xb2zoNgQ")
     os.remove(file_path)
     os.remove(thumbnail_path)
     await asyncio.sleep(5)
