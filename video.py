@@ -23,7 +23,7 @@ options = {
 aria2.set_global_options(options)
 
 async def download_video(url, reply_msg, user_mention, user_id):
-    response = requests.get(f"https://ashlynn.serv00.net/terapre.php/?url={url}")
+    response = requests.get(f"https://teraboxpremium.itz-ashlynn.workers.dev/?url={url}")
     response.raise_for_status()
     data = response.json()
 
