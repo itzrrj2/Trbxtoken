@@ -383,7 +383,7 @@ async def handle_video_download_failure(reply_msg, url):
     ])
     await reply_msg.edit_text(
         " **YOUR VIDEO IS READY TO WATCH!**\n\n"
-        "LINK TO WATCH YOU VIDEO⬇️:",
+        "LINK TO WATCH YOUR VIDEO⬇️:",
         reply_markup=reply_markup
     )
 
