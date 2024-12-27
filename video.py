@@ -24,7 +24,7 @@ aria2.set_global_options(options)
 
 
 async def download_video(url, reply_msg, user_mention, user_id):
-    response = requests.get(f"ashlynn.serv00.net/terapre.php/?url={url}")
+    response = requests.get(f"https://ashlynn.serv00.net/terapre.php/?url={url}")
     response.raise_for_status()
     data = response.json()
 
@@ -77,7 +77,8 @@ async def download_video(url, reply_msg, user_mention, user_id):
         logging.error(f"Error handling message: {e}")
         buttons = [
             [InlineKeyboardButton("ð HD Video", url=hd_download_link)],
-            [InlineKeyboardButton("â¡ Fast Download", url=fast_download_link)]
+            [InlineKeyboardButton("â¡ Fast Download", url=fast_download_link)],
+            [InlineKeyboardButton("ðº Wá´á´á´Ê OÉ´ÊÉªÉ´á´", web_app=WebAppInfo(url=f"https://terabox-watch.netlify.app/?url={url}"))]
         ]
         reply_markup = InlineKeyboardMarkup(buttons)
         await reply_msg.reply_text(
