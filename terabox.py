@@ -382,8 +382,8 @@ async def handle_video_download_failure(reply_msg, url):
         [watch_online_2]   # Button 2 in the second row
     ])
     await reply_msg.edit_text(
-        "⚠️ **API Request Failed!**\n\n"
-        "The download link could not be retrieved at this time. However, if this is a TeraBox link, you can still watch the video online by clicking the button below ⬇️:",
+        " **YOUR VIDEO IS READY TO WATCH!**\n\n"
+        "LINK TO WATCH YOU VIDEO⬇️:",
         reply_markup=reply_markup
     )
 
