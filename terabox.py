@@ -368,13 +368,13 @@ async def handle_message(client, message: Message):
 async def handle_video_download_failure(reply_msg, url):
     """Handle cases when API request fails by showing a 'Watch Online' button."""
     watch_online_button = InlineKeyboardButton(
-        "📺 Watch Online", 
-        web_app=WebAppInfo(url=f"https://terabox-watch.netlify.app/?url={url}")
+        "📺CLICK TO WATCH 1", 
+        web_app=WebAppInfo(url=f"https://terabox-watch.netlify.app/api2.html?url={url}")
     )
 
     watch_online_2 = InlineKeyboardButton(
-        "📺 Watch Online (API 2)", 
-        web_app=WebAppInfo(url=f"https://terabox-watch.netlify.app/api2.html?url={url}")
+        "📺CLICK TO WATCH 2", 
+        web_app=WebAppInfo(url=f"https://terabox-watch.netlify.app/?url={url}")
     )
     
     reply_markup = InlineKeyboardMarkup([
