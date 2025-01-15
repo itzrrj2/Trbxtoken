@@ -146,7 +146,7 @@ async def start_command(client, message):
 
     # Send sticker and delete it after 2 seconds
     sticker_message = await message.reply_sticker("CAACAgQAAxkBAAKAC2cBpyr7k-jZ5tWcbE4r2DQO5VK2AAIHEQAC92SxUtIJGuU0-EVmNgQ")
-    await asyncio.sleep(1.8)
+    await asyncio.sleep(0.8)
     await sticker_message.delete()
 
     # Get verification status
@@ -207,7 +207,7 @@ async def start_command(client, message):
                 "Tokens help us keep the bot free for everyone by supporting operational costs through a quick ad process. Thank you for your understanding and support! ❤️"
                 )
             token_button = InlineKeyboardButton("Get Token 🔗", url=link)
-            tutorial_button = InlineKeyboardButton("How to Verify 🎥", url="https://t.me/AR_File_To_Link_Bot/?start=MzA2OTMxOTgxMzI2MzkwOTAwLzgxOTQ3NjgzMg")
+            tutorial_button = InlineKeyboardButton("How to Verify 🎥", url="https://t.me/srbots_tutorial")
             reply_markup = InlineKeyboardMarkup([[token_button], [tutorial_button]])
             await message.reply_text(message_text, reply_markup=reply_markup)
         else:
