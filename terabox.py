@@ -184,8 +184,8 @@ async def start_command(client, message):
         "💎 **Your Ultimate Telegram Tool**—crafted to make your experience effortless and enjoyable.\n\n"
         "Join our growing community to discover more features and stay updated! 👇"
         )
-        join_button = InlineKeyboardButton("Join ❤️🚀", url="https://t.me/Xstream_links2")
-        developer_button = InlineKeyboardButton("Developer ⚡️", url="https://t.me/Xstream_Links2")
+        join_button = InlineKeyboardButton("Another Bot", url="https://t.me/sr_robots/2")
+        developer_button = InlineKeyboardButton("Developer ⚡️", url="https://t.me/Sr_Robots")
         reply_markup = InlineKeyboardMarkup([[join_button, developer_button]])
         await message.reply_text(reply_message, reply_markup=reply_markup)
     else:
@@ -193,7 +193,7 @@ async def start_command(client, message):
         if IS_VERIFY:
             token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
             logging.info(f"Generated token: {token}")
-            link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://t.me/opcontentsbot?start=verify_{token}')
+            link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://t.me/Teraboxyerbot?start=verify_{token}')
             await db_update_verify_status(user_id, {**verify_status, 'verify_token': token, 'link': link})
             message_text = (
                 "🚨 Token Expired!\n\n"
