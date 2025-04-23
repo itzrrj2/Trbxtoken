@@ -1,13 +1,13 @@
 import requests
 import aria2p
-from datetime import datetime
 import asyncio
 import os
 import time
 import logging
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from datetime import datetime
+from status import format_progress_bar
 
-# ---- Aria2 Setup ----
+# Initialize aria2 client
 aria2 = aria2p.API(
     aria2p.Client(
         host="http://localhost",
@@ -16,6 +16,7 @@ aria2 = aria2p.API(
     )
 )
 
+# Set optimized global options for aria2
 aria2.set_global_options({
     "max-tries": "50",
     "retry-wait": "2",
@@ -26,23 +27,8 @@ aria2.set_global_options({
     "user-agent": "Mozilla/5.0"
 })
 
-# ---- Format Progress ----
-def format_progress_bar(filename, percentage, done, total_size, status, eta, speed, elapsed, user_mention, user_id, aria2p_gid):
-    percent_str = f"{percentage:.2f}%"
-    done_mb = f"{int(done) / (1024 * 1024):.2f} MB"
-    total_mb = f"{int(total_size) / (1024 * 1024):.2f} MB"
-    speed_kb = f"{int(speed) / 1024:.2f} KB/s"
-    bar = "★" * int(percentage / 10) + "☆" * (10 - int(percentage / 10))
-    return (
-        f"┌─── FILEᴺᴬᴹᴱ:\n├ `{filename}`\n"
-        f"├─ [{bar}] {percent_str}\n"
-        f"├─ ᴘʀᴏᴄᴇssᴇᴅ: {done_mb} OF {total_mb}\n"
-        f"├─ sᴛᴀᴛᴜs: {status}\n"
-        f"├─ sᴘᴇᴇᴅ: {speed_kb}\n"
-        f"└─ ᴜsᴇʀ: 🤝 | ID: `{user_id}`"
-    )
 
-# ---- Download Video ----
+# --- Download Video Function ---
 async def download_video(url, reply_msg, user_mention, user_id):
     try:
         response = requests.get(f"https://terabox.pikaapis.workers.dev/?url={url}")
@@ -83,21 +69,22 @@ async def download_video(url, reply_msg, user_mention, user_id):
 
         if download.is_complete:
             file_path = download.files[0].path
-
             thumbnail_path = f"thumb_{user_id}.jpg"
-            thumbnail_data = requests.get(thumbnail_url)
+            thumb_data = requests.get(thumbnail_url)
             with open(thumbnail_path, "wb") as f:
-                f.write(thumbnail_data.content)
+                f.write(thumb_data.content)
 
             await reply_msg.edit_text("ᴜᴘʟᴏᴀᴅɪɴɢ...")
             return file_path, thumbnail_path, video_title
 
     except Exception as e:
+        import traceback
         logging.error(f"Download error: {e}")
-        await reply_msg.reply_text("❌ Could not download the video. Try again later.")
+        await reply_msg.edit_text(f"❌ Error while downloading:\n<code>{traceback.format_exc()}</code>", parse_mode="html")
         return None, None, None
 
-# ---- Upload Video ----
+
+# --- Upload Video Function ---
 async def upload_video(client, file_path, thumbnail_path, video_title, reply_msg, collection_channel_id, user_mention, user_id, message):
     file_size = os.path.getsize(file_path)
     uploaded = 0
@@ -130,6 +117,7 @@ async def upload_video(client, file_path, thumbnail_path, video_title, reply_msg
             except Exception as e:
                 logging.warning(f"Error updating progress message: {e}")
 
+    # Send video to collection channel
     with open(file_path, 'rb') as file:
         collection_message = await client.send_video(
             chat_id=collection_channel_id,
