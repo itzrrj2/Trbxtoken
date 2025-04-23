@@ -65,6 +65,27 @@ client = MongoClient(mongo_url)
 db = client['cphdlust']
 users_collection = db['users']
 
+@app.on_message(filters.command("start"))
+async def start_command(client, message):
+    user_id = message.from_user.id
+    user_mention = message.from_user.mention
+
+    # Check if user has joined @sr_robots
+    try:
+        sr_check = await client.get_chat_member("sr_robots", user_id)
+        if sr_check.status not in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
+            raise Exception("User not joined")
+    except:
+        join_btn = InlineKeyboardButton("Join @sr_robots", url="https://t.me/sr_robots")
+        markup = InlineKeyboardMarkup([[join_btn]])
+        await message.reply_text("⚠️ You must join @sr_robots to use this bot.", reply_markup=markup)
+        return
+
+    if not await present_user(user_id):
+        try:
+            await add_user(user_id)
+        except Exception as e:
+            logging.error(f"Failed to add user {user_id}: {e}")
 def extract_links(text):
     url_pattern = r'(https?://[^\s]+)'  # Regex to capture http/https URLs
     links = re.findall(url_pattern, text)
