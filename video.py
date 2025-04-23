@@ -107,4 +107,49 @@ async def upload_video(client, file_path, thumbnail_path, video_title, reply_msg
     async def progress(current, total):
         nonlocal uploaded, last_update_time
         uploaded = current
-       
+        percentage = (current / total) * 100
+        elapsed = (datetime.now() - start_time).total_seconds()
+
+        if time.time() - last_update_time > 2:
+            progress_text = format_progress_bar(
+                filename=video_title,
+                percentage=percentage,
+                done=current,
+                total_size=total,
+                status="Uploading",
+                eta=(total - current) / (current / elapsed) if current > 0 else 0,
+                speed=current / elapsed if current > 0 else 0,
+                elapsed=elapsed,
+                user_mention=user_mention,
+                user_id=user_id,
+                aria2p_gid=""
+            )
+            try:
+                await reply_msg.edit_text(progress_text)
+                last_update_time = time.time()
+            except Exception as e:
+                logging.warning(f"Error updating progress message: {e}")
+
+    with open(file_path, 'rb') as file:
+        collection_message = await client.send_video(
+            chat_id=collection_channel_id,
+            video=file,
+            caption=f"✨ ᴛɪᴛʟᴇ: {video_title}\n👤 ᴅᴏᴡɴʟᴏᴀᴅᴇᴅ ʙʏ: {user_mention}\n📥 ᴜsᴇʀ ʟɪɴᴋ: tg://openmessage?user_id={user_id}",
+            thumb=thumbnail_path,
+            progress=progress
+        )
+        await client.copy_message(
+            chat_id=message.chat.id,
+            from_chat_id=collection_channel_id,
+            message_id=collection_message.id
+        )
+        await message.delete()
+
+    await reply_msg.delete()
+    try:
+        await message.reply_sticker("CAACAgUAAxkBAAKAEWcBqlNKFe0wAuORDYIlEXotOTuRAALhAQACrb-BNke3w36Xb2zoNgQ")
+    except:
+        pass
+
+    os.remove(file_path)
+    os.remove(thumbnail_path)
